@@ -166,6 +166,7 @@ public class PlaylistActivity extends AppCompatActivity implements
         isSongClicked = true;
         Bundle bundle = new Bundle();
         bundle.putSerializable(CHOSEN_TRACK_KEY, track);
+        bundle.putString(JoinRoomActivity.ROOMNAMEKEY, roomName);
         CurrentSongInfoFragment currentSongInfoFragment = new CurrentSongInfoFragment();
         currentSongInfoFragment.setArguments(bundle);
         slidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
