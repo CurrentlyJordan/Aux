@@ -88,7 +88,7 @@ public class MasterPlaylistFragment extends Fragment implements
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 PlaylistTrack myTrack = dataSnapshot.getValue(PlaylistTrack.class);
                 if(myTrack.getVetos() >= 3) {
-
+                    myAdapter.rowClicked(myTrack);
                 }
             }
 
