@@ -10,5 +10,5 @@ public interface InfoSlideListener {
 
     void slidePanelWithInfo(PlaylistTrack track);
 
-    void slidePanelDownWithInfo();
+    void slidePanelDownWithInfo(PlaylistTrack track);
 }

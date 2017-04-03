@@ -44,7 +44,7 @@ import static nyc.c4q.ashiquechowdhury.auxx.util.SongListHelper.songList;
 public class MasterPlaylistFragment extends Fragment implements
         SpotifyPlayer.NotificationCallback, ConnectionStateCallback, Player.OperationCallback, ArtistSongSelectedListener {
 
-    private String roomName = "musicList";
+    private static String roomName = "musicList";
     private FirebaseDatabase database;
     private DatabaseReference reference;
     private ChildEventListener childListener;
@@ -95,10 +95,10 @@ public class MasterPlaylistFragment extends Fragment implements
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 PlaylistTrack myTrack = dataSnapshot.getValue(PlaylistTrack.class);
-                myAdapter.removeTrackWithURI(myTrack.getTrackUri());
                 InfoSlideListener info = (InfoSlideListener) getActivity();
-                info.slidePanelDownWithInfo();
+                info.slidePanelDownWithInfo(myTrack);
                 SongListHelper.removeSongAfterVeto(myTrack);
+                myAdapter.removeTrackWithURI(myTrack.getTrackUri());
                 Toasty.error(getContext(), myTrack.getTrackName() + " was deleted", Toast.LENGTH_SHORT, true).show();
             }
 

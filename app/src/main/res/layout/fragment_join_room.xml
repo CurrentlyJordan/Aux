@@ -23,12 +23,19 @@
             android:layout_height="match_parent"
             android:layout_weight="4" />
 
-            <ImageView
-            android:id="@+id/logo_img_view"
+
+
+        <nyc.c4q.ashiquechowdhury.auxx.util.SingleLineTextView
+            android:id="@+id/aux_custom_tv"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="6" />
+            android:layout_weight="6"
+            android:textAlignment="center"
+            android:text="@string/aux"
+            android:textColor="@color/colorWhite"
+            android:textSize="55sp"/>
+
+
 
         <android.support.v4.widget.Space
             android:layout_width="0dp"
@@ -67,7 +74,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:background="@color/sapphire"
+                        android:background="@color/colorPrimary"
                         android:gravity="center"
                         android:text="Create Room"
                         android:textColor="@android:color/white"
@@ -156,7 +163,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:background="@color/sapphire"
+                    android:background="@color/colorPrimary"
                     android:gravity="center"
                     android:text="View Profile"
                     android:textColor="@android:color/white"

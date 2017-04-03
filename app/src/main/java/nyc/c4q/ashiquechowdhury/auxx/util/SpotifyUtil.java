@@ -6,6 +6,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
@@ -19,6 +25,7 @@ import com.spotify.sdk.android.player.SpotifyPlayer;
 
 import static android.R.id.message;
 import static com.spotify.sdk.android.authentication.LoginActivity.REQUEST_CODE;
+import static nyc.c4q.ashiquechowdhury.auxx.util.SongListHelper.roomName;
 
 /**
  * Created by jordansmith on 3/7/17.
@@ -26,6 +33,7 @@ import static com.spotify.sdk.android.authentication.LoginActivity.REQUEST_CODE;
 
 public class SpotifyUtil implements
         SpotifyPlayer.NotificationCallback, ConnectionStateCallback, Player.OperationCallback {
+
     private static final String CLIENT_ID = "a47e94f21a9649c982f39e72920c1754";
     private static final String REDIRECT_URI = "aux://callback";
     private static SpotifyUtil instance;
@@ -125,8 +133,24 @@ public class SpotifyUtil implements
         Log.d(getClass().getName(), "Playback event received: " + playerEvent.name());
         switch (playerEvent) {
             case kSpPlaybackNotifyAudioDeliveryDone:
-                SongListHelper.playNextTrack();
-                break;
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference reference = database.getReference().child(roomName);
+
+                Query removedMusicQuery = reference.orderByChild("trackUri").equalTo(SongListHelper.getCurrentlyPlayingSong().getTrackUri());
+                removedMusicQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
+                            appleSnapshot.getRef().removeValue();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+
             case kSpPlaybackNotifyPlay:
                 tracklistener.changeToPauseButton();
                 break;
@@ -134,7 +158,6 @@ public class SpotifyUtil implements
                 tracklistener.changeToPlayButton();
                 break;
         }
-
     }
 
     @Override

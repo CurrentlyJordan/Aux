@@ -37,7 +37,7 @@
             android:layout_marginBottom="36dp"
             android:layout_marginEnd="36dp"
             android:elevation="11dp"
-            android:src="@drawable/llama_bro" />
+            android:visibility="invisible"/>
 
         <LinearLayout
             android:layout_width="match_parent"

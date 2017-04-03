@@ -56,7 +56,8 @@ public class NonMasterPlaylistAdapter extends RecyclerView.Adapter<NonMasterPlay
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                infoSlideListener.slidePanelWithInfo(trackList.get(holder.getAdapterPosition()));
+                if(holder.getAdapterPosition() >= 0)
+                    infoSlideListener.slidePanelWithInfo(trackList.get(holder.getAdapterPosition()));
             }
         });
     }

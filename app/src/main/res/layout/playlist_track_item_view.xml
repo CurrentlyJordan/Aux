@@ -21,14 +21,16 @@
                 android:id="@+id/playlist_album_art_text_view"
                 android:layout_width="@dimen/track_list_image_view_height"
                 android:layout_height="@dimen/track_list_image_view_height"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:orientation="vertical"
-                android:paddingLeft="@dimen/track_list_text_padding">
+                android:paddingLeft="@dimen/track_list_text_padding"
+                android:paddingRight="@dimen/track_list_text_padding">
 
                 <TextView
                     android:id="@+id/playlist_song_name_text_view"

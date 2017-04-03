@@ -22,7 +22,6 @@ public class Track {
     private Integer trackNumber;
     private String type;
     private String uri;
-    private String artistPictureUrl;
 
     public Album getAlbum() {
         return album;
@@ -136,7 +135,4 @@ public class Track {
         this.uri = uri;
     }
 
-    public void setArtistPictureUrl(String artistPictureUrl) {
-        this.artistPictureUrl = artistPictureUrl;
-    }
 }

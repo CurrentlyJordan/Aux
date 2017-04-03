@@ -31,7 +31,12 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
 
     @Override
     public ArtistViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View childView = LayoutInflater.from(parent.getContext()).inflate(R.layout.track_item_view, parent, false);
+        View childView = LayoutInflater.from(parent.getContext()).inflate(R.layout.horizontal_track_item, parent, false);
+        int height = parent.getMeasuredHeight();
+        int width = parent.getMeasuredWidth() / 2;
+        childView.setLayoutParams(new RecyclerView.LayoutParams(width, height));
+
+
         return new ArtistViewHolder(childView);
 
     }
@@ -72,10 +77,11 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
             artistName.setText(track.getArtists().get(0).getName());
             songName.setText(track.getName());
             if(!track.getAlbum().getImages().isEmpty()) {
-                Glide.with(itemView.getContext()).load(track.getAlbum().getImages().get(0).getUrl()).into(albumArt);
+
+                Glide.with(itemView.getContext()).load(track.getAlbum().getImages().get(0).getUrl()).fitCenter().into(albumArt);
             }
             else{
-                Glide.with(itemView.getContext()).load("https://www.tunefind.com/i/new/album-art-empty.png").into(albumArt);
+                Glide.with(itemView.getContext()).load("https://www.tunefind.com/i/new/album-art-empty.png").fitCenter().into(albumArt);
             }
         }
     }

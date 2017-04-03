@@ -91,7 +91,7 @@ public class NonMasterPlaylistFragment extends Fragment implements
                 PlaylistTrack myTrack = dataSnapshot.getValue(PlaylistTrack.class);
                 myAdapter.removeTrackWithURI(myTrack.getTrackUri());
                 InfoSlideListener info = (InfoSlideListener) getActivity();
-                info.slidePanelDownWithInfo();
+                info.slidePanelDownWithInfo(myTrack);
                 SongListHelper.removeSongAfterVeto(myTrack);
                 Toasty.error(getContext(), myTrack.getTrackName() + " was deleted", Toast.LENGTH_SHORT, true).show();
             }

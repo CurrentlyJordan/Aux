@@ -10,4 +10,8 @@ public class Images {
         private Integer width;
         private String url;
 
+        public String getUrl() {
+                return url;
+        }
+
 }

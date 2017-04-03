@@ -19,7 +19,7 @@ public interface SpotifyService {
     @GET("/v1/artists/{id}/top-tracks")
     Call<ArtistResponse> getArtistTopTracks(@Path("id") String artistID, @Query("country") String countryCode);
 
-    @GET("/v1/artist/{id}")
+    @GET("/v1/artists/{id}")
     Call<ArtistInfo> getArtistInfo(@Path("id") String artistID);
 
 }

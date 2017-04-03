@@ -29,11 +29,12 @@ import nyc.c4q.ashiquechowdhury.auxx.nonmaster.NonMasterPlaylistFragment;
 public class JoinRoomActivity extends AppCompatActivity implements
         SpotifyPlayer.NotificationCallback, ConnectionStateCallback, Listener, Player.OperationCallback, InfoSlideListener {
 
+    private CurrentSongInfoFragment currentSongInfoFragment;
     public static final String ROOMNAMEKEY = "nyc.c4q.PlaylistActivity.ROOMNAME";
     private SlidingUpPanelLayout slidingPanel;
     public static boolean isSongClicked = false;
     private final String CHOSEN_TRACK_KEY = "chosen track";
-    String roomName = "musicList";
+    private String roomName = "musicList";
 
 
     @Override
@@ -162,7 +163,7 @@ public class JoinRoomActivity extends AppCompatActivity implements
         bundle.putSerializable(CHOSEN_TRACK_KEY, track);
         bundle.putString(ROOMNAMEKEY, roomName);
 
-        CurrentSongInfoFragment currentSongInfoFragment = new CurrentSongInfoFragment();
+        currentSongInfoFragment = new CurrentSongInfoFragment();
         currentSongInfoFragment.setArguments(bundle);
         slidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
         getSupportFragmentManager().beginTransaction().replace(R.id.playlist_panelcontent_frame, currentSongInfoFragment).commit();
@@ -170,9 +171,15 @@ public class JoinRoomActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void slidePanelDownWithInfo() {
-        slidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-
+    public void slidePanelDownWithInfo(PlaylistTrack track) {
+        if(currentSongInfoFragment == null) return;
+        Bundle bundle = currentSongInfoFragment.getArguments();
+        if(bundle != null) {
+            PlaylistTrack checkTrack = (PlaylistTrack) bundle.getSerializable(CHOSEN_TRACK_KEY);
+            if(checkTrack.equals(track)){
+                slidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            }
+        }
     }
 
     @Override

@@ -29,13 +29,14 @@ import nyc.c4q.ashiquechowdhury.auxx.model.Listener;
 import nyc.c4q.ashiquechowdhury.auxx.model.PlaylistTrack;
 import nyc.c4q.ashiquechowdhury.auxx.util.SongListHelper;
 import nyc.c4q.ashiquechowdhury.auxx.util.SpotifyUtil;
+import nyc.c4q.ashiquechowdhury.auxx.util.TrackListener;
 
 public class PlaylistActivity extends AppCompatActivity implements
-        SpotifyPlayer.NotificationCallback, ConnectionStateCallback, Listener, Player.OperationCallback, InfoSlideListener {
+        SpotifyPlayer.NotificationCallback, ConnectionStateCallback, Listener, Player.OperationCallback, InfoSlideListener, TrackListener {
 
     //Todo: Write case to display placeholder view when song isn't playing/currently playing song == null and someone slides up on view
     //Todo: Set currently playing song = null when playlist finishes
-
+    private CurrentSongInfoFragment currentSongInfoFragment;
     public static final String ROOMNAMEKEY = "nyc.c4q.PlaylistActivity.ROOMNAME";
     private SlidingUpPanelLayout slidingPanel;
     private final String CHOSEN_TRACK_KEY = "chosen track";
@@ -78,7 +79,11 @@ public class PlaylistActivity extends AppCompatActivity implements
                     isSongClicked = false;
                 }
                 if (newState == SlidingUpPanelLayout.PanelState.EXPANDED && !isSongClicked) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.playlist_panelcontent_frame, new CurrentSongInfoFragment()).commit();
+                    CurrentSongInfoFragment currentInfoFragment = new CurrentSongInfoFragment();
+                    Bundle arguments = new Bundle();
+                    arguments.putString(ROOMNAMEKEY, roomName);
+                    currentInfoFragment.setArguments(arguments);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.playlist_panelcontent_frame, currentInfoFragment).commit();
                 }
             }
         });
@@ -169,15 +174,37 @@ public class PlaylistActivity extends AppCompatActivity implements
         Bundle bundle = new Bundle();
         bundle.putSerializable(CHOSEN_TRACK_KEY, track);
         bundle.putString(JoinRoomActivity.ROOMNAMEKEY, roomName);
-        CurrentSongInfoFragment currentSongInfoFragment = new CurrentSongInfoFragment();
+        currentSongInfoFragment = new CurrentSongInfoFragment();
         currentSongInfoFragment.setArguments(bundle);
         slidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
         getSupportFragmentManager().beginTransaction().replace(R.id.playlist_panelcontent_frame, currentSongInfoFragment).commit();
     }
 
     @Override
-    public void slidePanelDownWithInfo(){
-        slidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+    public void updateCurrentlyPlayingText(String trackName) {
+    }
+
+    @Override
+    public void changeToPlayButton() {
+    }
+
+    @Override
+    public void changeToPauseButton() {
+    }
+
+    @Override
+    public void pauseSong() {
+    }
+
+    public void slidePanelDownWithInfo(PlaylistTrack track) {
+        if(currentSongInfoFragment == null) return;
+        Bundle bundle = currentSongInfoFragment.getArguments();
+        if(bundle != null) {
+            PlaylistTrack checkTrack = (PlaylistTrack) bundle.getSerializable(CHOSEN_TRACK_KEY);
+            if(checkTrack.equals(track)){
+                slidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            }
+        }
     }
 
     @Override

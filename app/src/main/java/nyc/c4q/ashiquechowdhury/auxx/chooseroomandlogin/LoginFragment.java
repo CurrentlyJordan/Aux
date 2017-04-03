@@ -2,6 +2,7 @@ package nyc.c4q.ashiquechowdhury.auxx.chooseroomandlogin;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,12 +18,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -40,6 +39,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import nyc.c4q.ashiquechowdhury.auxx.R;
+import nyc.c4q.ashiquechowdhury.auxx.util.SingleLineTextView;
 
 public class LoginFragment extends Fragment implements
         GoogleApiClient.OnConnectionFailedListener {
@@ -48,8 +48,8 @@ public class LoginFragment extends Fragment implements
     private static final int RC_SIGN_IN = 9001;
     private EditText usernameEditText;
     private EditText passwordEditText;
-    String enteredUsername;
-    String enteredPassword;
+    private String enteredUsername;
+    private String enteredPassword;
     private GoogleApiClient googleApiClient;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -96,11 +96,11 @@ public class LoginFragment extends Fragment implements
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        ImageView logoIv = (ImageView) view.findViewById(R.id.aux_logo);
-        Glide.with(getContext()).load(R.drawable.lasso4).into(logoIv);
-
         CardView auxSignInButton = (CardView) view.findViewById(R.id.aux_signin_button);
         CardView googleSignInButton = (CardView) view.findViewById(R.id.google_signin_button);
+        SingleLineTextView singleLineTextView = (SingleLineTextView) view.findViewById(R.id.aux_login_tv);
+        Typeface skinnyMarkerFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/skinny_marker.ttf");
+        singleLineTextView.setTypeface(skinnyMarkerFont);
 
         usernameEditText = (EditText) view.findViewById(R.id.username_login_edittext);
         passwordEditText = (EditText) view.findViewById(R.id.password_login_edittext);

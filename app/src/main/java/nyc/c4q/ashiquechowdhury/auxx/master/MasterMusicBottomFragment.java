@@ -33,7 +33,6 @@ public class MasterMusicBottomFragment extends Fragment implements View.OnClickL
     private TextView currentTrackInfoTextView;
 
 
-
     //TODO: Make Music play/pause functionality better by using spotify player methods
 
     @Nullable
@@ -97,11 +96,10 @@ public class MasterMusicBottomFragment extends Fragment implements View.OnClickL
                 if(!SongListHelper.isPlaylistPlaying){
                     showAlert(song);
                 }
-                else{
+                else {
                     spotify.spotifyPlayer.resume((Player.OperationCallback) getActivity());
                     playButton.setVisibility(View.GONE);
                     pauseButton.setVisibility(View.VISIBLE);
-
                 }
 
                 break;
@@ -122,7 +120,7 @@ public class MasterMusicBottomFragment extends Fragment implements View.OnClickL
         currentTrackInfoTextView.setText(trackName);
     }
 
-    public void showAlert(final PlaylistTrack song){
+    public void showAlert(final PlaylistTrack song) {
         new AlertDialog.Builder(getContext())
                 .setTitle("Start Your Room's Playlist")
                 .setMessage("Are you sure you're ready to Jam?")
@@ -147,7 +145,6 @@ public class MasterMusicBottomFragment extends Fragment implements View.OnClickL
         playButton.setVisibility(View.VISIBLE);
         pauseButton.setVisibility(View.GONE);
         SongListHelper.isSongPlaying = false;
-
     }
 
     @Override
@@ -157,5 +154,8 @@ public class MasterMusicBottomFragment extends Fragment implements View.OnClickL
         SongListHelper.isSongPlaying = true;
     }
 
-
+    @Override
+    public void pauseSong() {
+        spotify.spotifyPlayer.pause((Player.OperationCallback) getActivity());
+    }
 }

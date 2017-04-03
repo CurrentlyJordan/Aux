@@ -10,11 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorGrey"
-        android:paddingBottom="2dp"
-        android:paddingTop="5dp"
         android:text="More From This Artist: "
-        android:textSize="20sp" />
+        android:textAlignment="center"/>
+<!--=======-->
+        <!--android:paddingBottom="2dp"-->
+        <!--android:paddingTop="5dp"-->
+        <!--android:text="More From This Artist: "-->
+        <!--android:textSize="20sp" />-->
 
+<!--&gt;>>>>>> e5cb687a05931a4b360df524e6a83bf4899ada8c-->
     <android.support.v7.widget.RecyclerView
         android:id="@+id/more_from_this_artist_recyclerview"
         android:layout_width="match_parent"

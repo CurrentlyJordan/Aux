@@ -1,28 +1,16 @@
 package nyc.c4q.ashiquechowdhury.auxx.util;
 
-import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
-
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import nyc.c4q.ashiquechowdhury.auxx.master.MasterSearchFragment;
 import nyc.c4q.ashiquechowdhury.auxx.model.Item;
 import nyc.c4q.ashiquechowdhury.auxx.model.PlaylistTrack;
 import nyc.c4q.ashiquechowdhury.auxx.model.artistModel.Track;
 
 public class SongListHelper {
-    public static int trackCounter = 0;
+
     public static boolean isSongPlaying = false;
     public static boolean isPlaylistPlaying = false;
-    private FirebaseDatabase database;
-    private DatabaseReference reference;
-
-
     public static List<PlaylistTrack> songList = new ArrayList<>();
 
     private static PlaylistTrack currentlyPlayingSong;
@@ -48,28 +36,12 @@ public class SongListHelper {
     }
 
     public static void playNextTrack() {
-        if (trackCounter + 1 >= SongListHelper.getSongList().size()) {
+        if (0 == SongListHelper.getSongList().size()) {
+            spotify.getTracklistener().updateCurrentlyPlayingText("No Songs Currently Playing");
+            spotify.getTracklistener().pauseSong();
+            isPlaylistPlaying = false;
         } else {
-            trackCounter++;
-            PlaylistTrack track = SongListHelper.getSongList().get(trackCounter);
-            setCurrentlyPlayingSong(track);
-            spotify.spotifyPlayer.playUri(null, track.getTrackUri(), 0, 0);
-            spotify.getTracklistener().updateCurrentlyPlayingText(formatPlayerInfo(track));
-            Log.d(String.valueOf(trackCounter) + "next", currentlyPlayingSong.getTrackName());
-        }
-    }
-
-    public static void playPreviousTrack(Context context) {
-        PlaylistTrack track;
-        if (trackCounter - 1 < 0) {
-            Toast.makeText(context, "Start of playlist", Toast.LENGTH_SHORT).show();
-            track = SongListHelper.getSongList().get(trackCounter);
-            setCurrentlyPlayingSong(track);
-            spotify.spotifyPlayer.playUri(null, track.getTrackUri(), 0, 0);
-            spotify.getTracklistener().updateCurrentlyPlayingText(formatPlayerInfo(track));
-        } else {
-            trackCounter--;
-            track = SongListHelper.getSongList().get(trackCounter);
+            PlaylistTrack track = SongListHelper.getSongList().get(0);
             setCurrentlyPlayingSong(track);
             spotify.spotifyPlayer.playUri(null, track.getTrackUri(), 0, 0);
             spotify.getTracklistener().updateCurrentlyPlayingText(formatPlayerInfo(track));
@@ -111,16 +83,10 @@ public class SongListHelper {
 
     public static void removeSongAfterVeto(PlaylistTrack track) {
         if (currentlyPlayingSong != null && SongListHelper.currentlyPlayingSong.equals(track)) {
-            playNextTrack();
             SongListHelper.getSongList().remove(track);
-            trackCounter = songList.indexOf(currentlyPlayingSong);
-            Log.d(String.valueOf(trackCounter) + "if", currentlyPlayingSong.getTrackName());
+            playNextTrack();
         } else {
             SongListHelper.getSongList().remove(track);
-            if (currentlyPlayingSong != null) {
-                trackCounter = songList.indexOf(currentlyPlayingSong);
-                Log.d(String.valueOf(trackCounter) + "else", currentlyPlayingSong.getTrackName());
-            }
         }
     }
 
@@ -133,37 +99,4 @@ public class SongListHelper {
         sb.append(track.getTrackName());
         return sb.toString();
     }
-
-//    public void checkVeto() {
-//        if (trackCounter + 1 >= SongListHelper.getSongList().size()) {
-//        }
-//        else {
-//            int tempTrackCounter = trackCounter + 1;
-//            PlaylistTrack track = SongListHelper.getSongList().get(tempTrackCounter);
-//            if(track.getVetos() < 3){
-//                playNextTrack();
-//            }
-//            else{
-//                removeSongAfterVeto(track);
-//                database = FirebaseDatabase.getInstance();
-//                reference = database.getReference().child(MasterSearchFragment.MUSIC_LIST);
-//                Query removedMusicQuery = reference.orderByChild("trackName").equalTo(track.getTrackName());
-//                removedMusicQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot) {
-//                        for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
-//                            appleSnapshot.getRef().removeValue();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(DatabaseError databaseError) {
-//
-//                    }
-//                });
-//                playNextTrack();
-//            }
-//        }
-//}
-
 }

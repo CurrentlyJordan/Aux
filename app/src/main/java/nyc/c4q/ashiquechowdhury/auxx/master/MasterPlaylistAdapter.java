@@ -60,7 +60,8 @@ public class MasterPlaylistAdapter extends RecyclerView.Adapter<MasterPlaylistAd
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                infoSlideListener.slidePanelWithInfo(trackList.get(holder.getAdapterPosition()));
+                if(holder.getAdapterPosition() >= 0)
+                    infoSlideListener.slidePanelWithInfo(trackList.get(holder.getAdapterPosition()));
             }
         });
     }
@@ -107,6 +108,11 @@ public class MasterPlaylistAdapter extends RecyclerView.Adapter<MasterPlaylistAd
         }
         trackList.remove(albumposition);
         notifyItemRemoved(albumposition);
+    }
+
+    public void removeFirstItem() {
+        trackList.remove(0);
+        notifyItemRemoved(0);
     }
 
 

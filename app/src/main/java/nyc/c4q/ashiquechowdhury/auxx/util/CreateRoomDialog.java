@@ -7,13 +7,23 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
+
+import org.angmarch.views.NiceSpinner;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import nyc.c4q.ashiquechowdhury.auxx.R;
 
 public class CreateRoomDialog extends DialogFragment {
     private EditText roomNameEditText;
+    private EditText roomPasswordEditText;
+    private NiceSpinner spinner;
     private SubmitRoomNameListener roomNameSubmitListener;
+    private boolean roomIsPublic = true;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -21,15 +31,44 @@ public class CreateRoomDialog extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         View view = inflater.inflate(R.layout.fragment_room_name_password, null);
+
         roomNameEditText = (EditText) view.findViewById(R.id.room_name);
+        roomPasswordEditText = (EditText) view.findViewById(R.id.room_password);
+
+        spinner = (NiceSpinner) view.findViewById(R.id.create_room_spinner);
+        List<String> roomChoice = new LinkedList<>(Arrays.asList("Public", "Private"));
+        roomPasswordEditText.setVisibility(View.INVISIBLE);
+        spinner.attachDataSource(roomChoice);
+
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                roomIsPublic = !roomIsPublic;
+                if(!roomIsPublic)
+                    roomPasswordEditText.setVisibility(View.VISIBLE);
+                else
+                    roomPasswordEditText.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
         builder.setView(view)
                 .setPositiveButton(R.string.create_room_prompt, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String input = String.valueOf(roomNameEditText.getText());
-                        roomNameSubmitListener.onSubmitRoomName(input);
-                        roomNameEditText.getText();
-
+                        if (roomIsPublic) {
+                            roomNameSubmitListener.onSubmitRoomName(input);
+                        } else {
+                            String password = String.valueOf(roomPasswordEditText.getText());
+                            roomNameSubmitListener.onSubmitRoomName(input, password);
+                        }
                     }
                 });
         return builder.create();
@@ -41,5 +80,6 @@ public class CreateRoomDialog extends DialogFragment {
 
     public interface SubmitRoomNameListener {
         void onSubmitRoomName(String roomNameInput);
+        void onSubmitRoomName(String roomNameInput, String password);
     }
 }

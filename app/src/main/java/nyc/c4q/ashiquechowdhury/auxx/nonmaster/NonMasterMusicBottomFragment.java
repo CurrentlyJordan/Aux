@@ -20,15 +20,12 @@ public class NonMasterMusicBottomFragment extends Fragment implements View.OnCli
     private FrameLayout upVoteButton;
     private FrameLayout playButton;
     private FrameLayout downVoteButton;
-    private SpotifyUtil spotify;
     private TextView currentTrackInfoTextView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_master_musicplayer, container, false);
-
-        spotify = SpotifyUtil.getInstance();
 
         upVoteButton = (FrameLayout) view.findViewById(R.id.upvotebutton);
         playButton = (FrameLayout) view.findViewById(R.id.playbutton);
@@ -83,5 +80,9 @@ public class NonMasterMusicBottomFragment extends Fragment implements View.OnCli
     @Override
     public void changeToPauseButton() {
 
+    }
+
+    @Override
+    public void pauseSong() {
     }
 }
